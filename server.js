@@ -181,7 +181,7 @@ function employeeById() {
             name: "empById"
         }
     ]).then( data => {
-        connection.query("SELECT * FROM employee WHERE role_id = ?", {
+        connection.query("SELECT * FROM employee WHERE ?", {
             id: data.empById
         }, (err, res) => {
             if(err) {
@@ -250,6 +250,32 @@ function addRole() {
             promptUser();
         })
     })
+}
+
+function viewRoles() {
+    connection.query("SELECT * FROM roles", (err, res) =>{
+        if (err) 
+        throw err;
+
+        const table = cTable.getTable(res);
+
+        console.log(table);
+        promptUser();
+    });
+   
+}
+
+function viewDep() {
+    connection.query("SELECT * FROM department", (err, res) =>{
+        if (err) 
+        throw err;
+
+        const table = cTable.getTable(res);
+
+        console.log(table);
+        promptUser();
+    });
+   
 }
 
 module.exports = connection;
