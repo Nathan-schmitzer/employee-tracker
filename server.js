@@ -18,6 +18,7 @@ connection.connect(err => {
     console.log("Connecting on local host 3306");
 });
 
+// prompting user for their choice
 function promptUser() {
     inquirer.prompt([
    {
@@ -96,6 +97,7 @@ function promptUser() {
    })
     };
 
+    // function to create employee
     function createEmployee () {
         inquirer.prompt([
             {
@@ -134,6 +136,8 @@ function promptUser() {
         });
     }; 
 
+
+    // function to remove employees
     function removeEmp() {
         inquirer.prompt([
             {
@@ -154,6 +158,7 @@ function promptUser() {
         });
     };
 
+    // function to view all employees
     function allEmployees() {
         connection.query("SELECT * FROM employee", (err, res) =>{
             if (err) 
@@ -166,6 +171,86 @@ function promptUser() {
         });
        
     }
+
+    // search for employee by id
+function employeeById() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            message: "Which employee would you like to search for? (by id)",
+            name: "empById"
+        }
+    ]).then( data => {
+        connection.query("SELECT * FROM employee WHERE role_id = ?", {
+            id: data.empById
+        }, (err, res) => {
+            if(err) {
+                throw err;
+                
+            };
+            console.log(res)
+                const table = cTable.getTable(res);
+                console.log(table)  
+                console.log("Successfully search for employee by id!")
+            promptUser();          
+        })
+        
+    })
+    
+}
+
+
+function addDep() {
+    inquirer.prompt([
+        {
+            type:'input',
+            message: "What department would you like to add?",
+            name: "newDep"
+        }
+    ]).then( data => {
+        connection.query("INSERT INTO department SET ?", {
+            dep_name: data.newDep
+        }, (err, res) => {
+            if(err) {
+                throw err;
+            };
+            console.log("Successfully created a new department!")
+            promptUser();
+        
+        })
+    })
+
+}
+
+function addRole() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            message: "What is the title of your new role?",
+            name: "newRole"
+        }, {
+            type: 'input',
+            message: "How much will the salary for this role be?",
+            name: "inputSalary"
+        }, {
+            type: 'input',
+            message: "What department will this role be apart of? (by id)",
+            name: "byDep"
+        }
+    ]).then( data => {
+        connection.query("INSERT INTO roles SET ?", {
+            title: data.newRole,
+            salary: data.inputSalary,
+            dep_id: data.byDep
+        }, (err, res) => {
+            if(err) {
+                throw err;
+            };
+            console.log("Successfully added a new role!")
+            promptUser();
+        })
+    })
+}
 
 module.exports = connection;
 
