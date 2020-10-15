@@ -1,4 +1,4 @@
-# epmloyee-tracker
+# employee-tracker
 
 Usage: This app allows you to create, add, delete: employees, roles, and departments. It is used to help maintain and keep track of employees going in and out of a company.
 You can keep track of their salary, roles, roles by department and such!
